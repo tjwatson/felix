@@ -27,18 +27,21 @@ import org.osgi.resource.Capability;
 
 public class CandidateSelector {
     private final AtomicBoolean isUnmodifiable;
+    private final AtomicBoolean isShared;
     protected final List<Capability> unmodifiable;
     private int currentIndex = 0;
 
     public CandidateSelector(List<Capability> candidates, AtomicBoolean isUnmodifiable) {
         this.isUnmodifiable = isUnmodifiable;
         this.unmodifiable = new ArrayList<Capability>(candidates);
+        this.isShared = new AtomicBoolean(false);
     }
 
     protected CandidateSelector(CandidateSelector candidateSelector) {
         this.isUnmodifiable = candidateSelector.isUnmodifiable;
         this.unmodifiable = candidateSelector.unmodifiable;
         this.currentIndex = candidateSelector.currentIndex;
+        this.isShared = candidateSelector.isShared;
     }
 
     public CandidateSelector copy() {
@@ -86,5 +89,26 @@ public class CandidateSelector {
         if (isUnmodifiable.get()) {
             throw new IllegalStateException("Trying to mutate after candidates have been prepared.");
         }
+    }
+
+    public int hashCode() {
+        return unmodifiable.hashCode() + currentIndex;
+    }
+
+    public boolean equals(Object o) {
+        if (!(o instanceof CandidateSelector))
+        {
+            return false;
+        }
+        CandidateSelector other = (CandidateSelector) o;
+        return currentIndex == other.currentIndex && unmodifiable.equals(other.unmodifiable);
+    }
+
+    public void share() {
+        isShared.set(true);
+    }
+
+    public boolean isShared() {
+        return isShared.get();
     }
 }

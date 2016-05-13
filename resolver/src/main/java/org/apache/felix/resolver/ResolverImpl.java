@@ -62,7 +62,7 @@ public class ResolverImpl implements Resolver
         private final List<Capability> m_dynamicCandidates;
         // keeps track of valid on demand fragments that we have seen.
         // a null value or TRUE indicate it is valid
-        Map<Resource, Boolean> m_validOnDemandResources = new HashMap<Resource, Boolean>(0);
+        private final Map<Resource, Boolean> m_validOnDemandResources = new HashMap<Resource, Boolean>(0);
         // Holds candidate permutations based on permutating "uses" chains.
         // These permutations are given higher priority.
         private final List<Candidates> m_usesPermutations = new LinkedList<Candidates>();
@@ -114,8 +114,56 @@ public class ResolverImpl implements Resolver
             return m_resolveContext;
         }
 
-        ConcurrentMap<String, List<String>> getUsesCache() {
-            return m_usesCache;
+        List<String> getUses(Capability cap) {
+            List<String> uses = null;
+            String s = cap.getDirectives().get(Namespace.CAPABILITY_USES_DIRECTIVE);
+            if (s != null && s.length() > 0)
+            {
+                // Parse these uses directive.
+                uses = m_usesCache.get(s);
+                if (uses == null)
+                {
+                    uses = parseUses(s);
+                    m_usesCache.put(s, uses);
+                }
+            }
+            return uses;
+        }
+
+        private static List<String> parseUses(String s) {
+            int nb = 1;
+            int l = s.length();
+            for (int i = 0; i < l; i++) {
+                if (s.charAt(i) == ',') {
+                    nb++;
+                }
+            }
+            List<String> uses = new ArrayList<String>(nb);
+            int start = 0;
+            while (true) {
+                while (start < l) {
+                    char c = s.charAt(start);
+                    if (c != ' ' && c != ',') {
+                        break;
+                    }
+                    start++;
+                }
+                int end = start + 1;
+                while (end < l) {
+                    char c = s.charAt(end);
+                    if (c == ' ' || c == ',') {
+                        break;
+                    }
+                    end++;
+                }
+                if (start < l) {
+                    uses.add(s.substring(start, end));
+                    start = end + 1;
+                } else {
+                    break;
+                }
+            }
+            return uses;
         }
 
         void permutateIfNeeded(PermutationType type, Requirement req, Candidates permutation) {
@@ -1011,29 +1059,10 @@ public class ResolverImpl implements Resolver
 
         for (Capability candSourceCap : getPackageSources(mergeCap, resourcePkgMap))
         {
-            List<String> uses;
-// TODO: RFC-112 - Need impl-specific type
-//            if (candSourceCap instanceof FelixCapability)
-//            {
-//                uses = ((FelixCapability) candSourceCap).getUses();
-//            }
-//            else
+            List<String> uses = session.getUses(candSourceCap);
+            if (uses == null)
             {
-                String s = candSourceCap.getDirectives().get(Namespace.CAPABILITY_USES_DIRECTIVE);
-                if (s != null && s.length() > 0)
-                {
-                    // Parse these uses directive.
-                    uses = session.getUsesCache().get(s);
-                    if (uses == null)
-                    {
-                        uses = parseUses(s);
-                        session.getUsesCache().put(s, uses);
-                    }
-                }
-                else
-                {
-                    continue;
-                }
+                continue;
             }
             Packages candSourcePkgs = resourcePkgMap.get(candSourceCap.getResource());
             for (String usedPkgName : uses)
@@ -1208,42 +1237,6 @@ public class ResolverImpl implements Resolver
         executor.await();
 
         return allPackages;
-    }
-
-    private static List<String> parseUses(String s) {
-        int nb = 1;
-        int l = s.length();
-        for (int i = 0; i < l; i++) {
-            if (s.charAt(i) == ',') {
-                nb++;
-            }
-        }
-        List<String> uses = new ArrayList<String>(nb);
-        int start = 0;
-        while (true) {
-            while (start < l) {
-                char c = s.charAt(start);
-                if (c != ' ' && c != ',') {
-                    break;
-                }
-                start++;
-            }
-            int end = start + 1;
-            while (end < l) {
-                char c = s.charAt(end);
-                if (c == ' ' || c == ',') {
-                    break;
-                }
-                end++;
-            }
-            if (start < l) {
-                uses.add(s.substring(start, end));
-                start = end + 1;
-            } else {
-                break;
-            }
-        }
-        return uses;
     }
 
     private static void addUsedBlame(

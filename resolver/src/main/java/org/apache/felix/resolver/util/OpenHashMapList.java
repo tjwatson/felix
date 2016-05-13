@@ -18,6 +18,9 @@
  */
 package org.apache.felix.resolver.util;
 
+import java.util.IdentityHashMap;
+import java.util.Map;
+
 import org.osgi.resource.Requirement;
 
 public class OpenHashMapList extends OpenHashMap<Requirement, CandidateSelector> {
@@ -30,12 +33,29 @@ public class OpenHashMapList extends OpenHashMap<Requirement, CandidateSelector>
         super(initialCapacity);
     }
 
-    public OpenHashMapList deepClone() {
+    public OpenHashMapList deepClone(boolean shareSelectors) {
+        Map<CandidateSelector, CandidateSelector> sharedSelectors = new IdentityHashMap<CandidateSelector, CandidateSelector>();
         OpenHashMapList copy = (OpenHashMapList) super.clone();
         Object[] values = copy.value;
         for (int i = values.length; i-- > 0;) {
             if (values[i] != null) {
-                values[i] = ((CandidateSelector) values[i]).copy();
+                if (shareSelectors)
+                {
+                    if (sharedSelectors.containsKey(values[i]))
+                    {
+                        values[i] = sharedSelectors.get(values[i]);
+                    }
+                    else
+                    {
+                        CandidateSelector selectorCopy = ((CandidateSelector) values[i]).copy();
+                        sharedSelectors.put((CandidateSelector) values[i], selectorCopy);
+                        values[i] = selectorCopy;
+                    }
+                }
+                else
+                {
+                    values[i] = ((CandidateSelector) values[i]).copy();
+                }
             }
         }
         return copy;

@@ -60,6 +60,7 @@ class Candidates
 
     private final OpenHashMapSet<Requirement, Capability> m_delta;
     private final AtomicBoolean m_candidateSelectorsUnmodifiable;
+	private final AtomicBoolean m_shareSelectors;
 
     /**
      * Private copy constructor used by the copy() method.
@@ -67,6 +68,7 @@ class Candidates
     private Candidates(
         ResolveSession session,
         AtomicBoolean candidateSelectorsUnmodifiable,
+        AtomicBoolean shareSelectors,
         OpenHashMapSet<Capability, Requirement> dependentMap,
         OpenHashMapList candidateMap,
         Map<Resource, WrappedResource> wrappedHosts,
@@ -76,6 +78,7 @@ class Candidates
     {
         m_session = session;
         m_candidateSelectorsUnmodifiable = candidateSelectorsUnmodifiable;
+        m_shareSelectors = shareSelectors;
         m_dependentMap = dependentMap;
         m_candidateMap = candidateMap;
         m_allWrappedHosts = wrappedHosts;
@@ -91,6 +94,7 @@ class Candidates
     {
         m_session = session;
         m_candidateSelectorsUnmodifiable = new AtomicBoolean(false);
+        m_shareSelectors = new AtomicBoolean(false);
         m_dependentMap = new OpenHashMapSet<Capability, Requirement>();
         m_candidateMap = new OpenHashMapList();
         m_allWrappedHosts = new HashMap<Resource, WrappedResource>();
@@ -347,6 +351,7 @@ class Candidates
             isSubstituted(substitutable, substituteStatuses);
         }
 
+        Set<CandidateSelector> removedSubstitutes = Collections.newSetFromMap(new IdentityHashMap<CandidateSelector, Boolean>());
         // Remove any substituted exports from candidates
         for (Map.Entry<Capability, Integer> substituteStatus : substituteStatuses.fast())
         {
@@ -362,7 +367,7 @@ class Candidates
                 for (Requirement dependent : dependents)
                 {
                     CandidateSelector candidates = m_candidateMap.get(dependent);
-                    if (candidates != null)
+                    if (candidates != null && removedSubstitutes.add(candidates))
                     {
                         candidates:
                         while (!candidates.isEmpty())
@@ -662,6 +667,7 @@ class Candidates
         m_candidateMap.put(req, new CandidateSelector(candidates, m_candidateSelectorsUnmodifiable));
         for (Capability cap : candidates)
         {
+            // record the dependents
             m_dependentMap.getOrCompute(cap).add(req);
         }
     }
@@ -725,16 +731,35 @@ class Candidates
 
     public void removeFirstCandidate(Requirement req)
     {
+        Collection<Requirement> dependents;
         CandidateSelector candidates = m_candidateMap.get(req);
         // Remove the conflicting candidate.
         Capability cap = candidates.removeCurrentCandidate();
-        if (candidates.isEmpty())
+        if (candidates.isShared())
         {
-            m_candidateMap.remove(req);
+            Collection<Requirement> reqs = m_dependentMap.get(cap);
+            dependents = new ArrayList<Requirement>();
+            for (Requirement dependent : reqs) {
+                if (candidates == m_candidateMap.get(dependent)) {
+                    dependents.add(dependent);
+                }
+            }
         }
-        // Update the delta with the removed capability
-        CopyOnWriteSet<Capability> capPath = m_delta.getOrCompute(req);
-        capPath.add(cap);
+        else
+        {
+            dependents = Collections.singleton(req);
+        }
+
+        for (Requirement dependent : dependents) {
+            if (candidates.isEmpty())
+            {
+                m_candidateMap.remove(dependent);
+            }
+            // Update the delta with the removed capability
+            CopyOnWriteSet<Capability> capPath = m_delta.getOrCompute(req);
+            capPath.add(cap);
+        }
+
     }
 
     public CandidateSelector clearMultipleCardinalityCandidates(Requirement req, Collection<Capability> caps)
@@ -966,9 +991,52 @@ class Candidates
         m_candidateMap.trim();
         m_dependentMap.trim();
 
+        if (isPermutationCntTooHigh(m_session, this))
+        {
+            shareSelectors();
+        }
         // mark the selectors as unmodifiable now
         m_candidateSelectorsUnmodifiable.set(true);
         return null;
+    }
+
+    private void shareSelectors() {
+        m_shareSelectors.set(true);
+        Map<CandidateSelector, CandidateSelector> mandatoryShared = new HashMap<CandidateSelector, CandidateSelector>();
+        Map<CandidateSelector, CandidateSelector> mandatoryMultiShared = new HashMap<CandidateSelector, CandidateSelector>();
+        Map<CandidateSelector, CandidateSelector> optionalShared = new HashMap<CandidateSelector, CandidateSelector>();
+        Map<CandidateSelector, CandidateSelector> optionalMultiShared = new HashMap<CandidateSelector, CandidateSelector>();
+        for (Entry<Requirement, CandidateSelector> entry : m_candidateMap.fast()) {
+            Map<CandidateSelector, CandidateSelector> sharedSelectors;
+            if (Util.isOptional(entry.getKey())) {
+                sharedSelectors = Util.isMultiple(entry.getKey()) ? optionalMultiShared : optionalShared;
+            } else {
+                sharedSelectors = Util.isMultiple(entry.getKey()) ? mandatoryMultiShared : mandatoryShared;
+            }
+            if (sharedSelectors.containsKey(entry.getValue())) {
+                CandidateSelector sharedSelector = sharedSelectors.get(entry.getValue());
+                sharedSelector.share();
+                entry.setValue(sharedSelector);
+            }
+            else
+            {
+                sharedSelectors.put(entry.getValue(), entry.getValue());
+            }
+        }
+    }
+
+	static private boolean isPermutationCntTooHigh(ResolveSession session, Candidates candidates) {
+        int permutationCnt = 1;
+        for (CandidateSelector selector : candidates.m_candidateMap.values()) {
+            permutationCnt *= selector.getRemainingCandidateCount();
+            // This is just an arbitrary number, need to figure out a good value
+            if (permutationCnt > 2000000)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     // Maps a host capability to a map containing its potential fragments;
@@ -1145,8 +1213,9 @@ class Candidates
         return new Candidates(
                 m_session,
                 m_candidateSelectorsUnmodifiable,
+                m_shareSelectors,
                 m_dependentMap,
-                m_candidateMap.deepClone(),
+                m_candidateMap.deepClone(m_shareSelectors.get()),
                 m_allWrappedHosts,
                 m_populateResultCache,
                 m_subtitutableMap,

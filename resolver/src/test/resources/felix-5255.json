@@ -1,0 +1,1835 @@
+{
+  "repository": [
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.x1; type=osgi.bundle; version:Version=1.0.0",
+        "osgi.wiring.package; osgi.wiring.package=test.a; version:Version=1.0; uses:=\"test.b\""
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(&(osgi.wiring.package=test.b)(&(version>=1.1)(!(version>=1.2))))\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.x2; type=osgi.bundle; version:Version=1.0.0",
+        "osgi.wiring.package; osgi.wiring.package=test.a; version:Version=1.1; uses:=\"test.b\""
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(&(osgi.wiring.package=test.b)(&(version>=1.0)(!(version>=1.1))))\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.y1; type=osgi.bundle; version:Version=1.0.0",
+        "osgi.wiring.package; osgi.wiring.package=test.b; version:Version=1.0"
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.y2; type=osgi.bundle; version:Version=1.0.0",
+        "osgi.wiring.package; osgi.wiring.package=test.b; version:Version=1.1"
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    },
+    {
+      "capabilities": [
+        "osgi.identity; osgi.identity=test.z1; type=osgi.bundle; version:Version=1.0.0"
+      ],
+      "requirements": [
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.a)\"",
+        "osgi.wiring.package;  filter:=\"(osgi.wiring.package=test.b)\""
+      ]
+    }
+  ],
+  "exception": "org.osgi.service.resolver.ResolutionException: Uses constraint violation. Unable to resolve resource org.apache.activemq.activemq-blueprint [org.apache.activemq.activemq-blueprint/5.11.1] because it is exposed to package 'org.apache.aries.blueprint' from resources org.apache.aries.blueprint.core [org.apache.aries.blueprint.core/1.4.3] and org.apache.aries.blueprint.core [org.apache.aries.blueprint.core/1.4.3] via two dependency chains.\n\nChain 1:\n  org.apache.activemq.activemq-blueprint [org.apache.activemq.activemq-blueprint/5.11.1]\n    import: (&(osgi.wiring.package=org.apache.aries.blueprint)(version>=1.0.0)(!(version>=2.0.0)))\n     |\n    export: osgi.wiring.package: org.apache.aries.blueprint\n  org.apache.aries.blueprint.core [org.apache.aries.blueprint.core/1.4.3]\n\nChain 2:\n  org.apache.activemq.activemq-blueprint [org.apache.activemq.activemq-blueprint/5.11.1]\n    import: (&(osgi.wiring.package=org.apache.xbean.blueprint.context.impl)(version>=3.13.0)(!(version>=4.0.0)))\n     |\n    export: osgi.wiring.package=org.apache.xbean.blueprint.context.impl; uses:=org.apache.aries.blueprint\n  org.apache.xbean.blueprint [org.apache.xbean.blueprint/3.18.0]\n    import: (&(osgi.wiring.package=org.apache.aries.blueprint)(version>=1.0.0)(!(version>=2.0.0)))\n     |\n    export: osgi.wiring.package: org.apache.aries.blueprint\n  org.apache.aries.blueprint.core [org.apache.aries.blueprint.core/1.4.3]"
+}
