@@ -104,7 +104,7 @@ public class Activator extends AbstractExtender implements SimpleLogger
         // require the log service
         m_logService = new ServiceTracker<LogService, LogService>( m_context, LOGSERVICE_CLASS, null );
         m_logService.open();
-        // set bundle context for PackageAdmin tracker
+        // set bundle context for FrameworkWiring
         ClassUtils.setBundleContext( context );
         // get the configuration
         m_configuration.start( m_context ); //this will call restart, which calls super.start.
@@ -121,7 +121,7 @@ public class Activator extends AbstractExtender implements SimpleLogger
         {
             m_globalContext = m_context;
         }
-        if ( ClassUtils.m_packageAdmin != null )
+        if (ClassUtils.m_fwkWiring != null)
         {
             log( LogService.LOG_INFO, m_bundle,
                 "Stopping to restart with new globalExtender setting: " + globalExtender, null );

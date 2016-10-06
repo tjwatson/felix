@@ -20,17 +20,25 @@ package org.apache.felix.scr.impl.inject;
 
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.felix.scr.impl.helper.SimpleLogger;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.Constants;
 import org.osgi.framework.ServiceReference;
+import org.osgi.framework.namespace.HostNamespace;
+import org.osgi.framework.namespace.PackageNamespace;
+import org.osgi.framework.wiring.BundleCapability;
+import org.osgi.framework.wiring.BundleRevision;
+import org.osgi.framework.wiring.BundleWire;
+import org.osgi.framework.wiring.BundleWiring;
+import org.osgi.framework.wiring.FrameworkWiring;
+import org.osgi.resource.Requirement;
+import org.osgi.resource.Resource;
 import org.osgi.service.component.ComponentServiceObjects;
 import org.osgi.service.log.LogService;
-import org.osgi.service.packageadmin.ExportedPackage;
-import org.osgi.service.packageadmin.PackageAdmin;
-import org.osgi.util.tracker.ServiceTracker;
 
 
 /**
@@ -38,10 +46,6 @@ import org.osgi.util.tracker.ServiceTracker;
  */
 public class ClassUtils
 {
-
-    // name of the PackageAdmin class (this is a string to not create a reference to the class)
-    private static final String PACKAGEADMIN_CLASS = "org.osgi.service.packageadmin.PackageAdmin";
-
     private static final Class<?> OBJECT_CLASS = Object.class;
 
     public static final Class<?> SERVICE_REFERENCE_CLASS = ServiceReference.class;
@@ -56,8 +60,8 @@ public class ClassUtils
 
     // this bundle's context
     private static BundleContext m_context;
-    // the package admin service (see BindMethod.getParameterClass)
-    public static volatile ServiceTracker<?, ?> m_packageAdmin;
+
+    public static volatile FrameworkWiring m_fwkWiring;
 
     /**
      * Returns the class object representing the class of the field reference
@@ -114,61 +118,131 @@ public class ClassUtils
                 "getParameterClass: Not found through component class, using PackageAdmin service", null );
         }
 
-        // try to load the class with the help of the PackageAdmin service
-        PackageAdmin pa = ( PackageAdmin ) getPackageAdmin();
-        if ( pa != null )
+        // try to load the class with the help of the FrameworkWiring
+        Class<?> referenceClass = findClassFromFrameworkWiring(className, logger);
+        if (referenceClass != null)
         {
-            final String referenceClassPackage = className.substring( 0, className
-                .lastIndexOf( '.' ) );
-            ExportedPackage[] pkg = pa.getExportedPackages( referenceClassPackage );
-            if ( pkg != null )
-            {
-                for ( int i = 0; i < pkg.length; i++ )
-                {
-                    try
-                    {
-                        if ( logger.isLogEnabled( LogService.LOG_DEBUG ) )
-                        {
-                            logger.log(
-                                LogService.LOG_DEBUG,
-                                "getParameterClass: Checking Bundle {0}/{1}",
-                                    new Object[] {pkg[i].getExportingBundle().getSymbolicName(), pkg[i].getExportingBundle().getBundleId()}, null );
-                        }
-
-                        Class<?> referenceClass = pkg[i].getExportingBundle().loadClass( className );
-                        if ( logger.isLogEnabled( LogService.LOG_DEBUG ) )
-                        {
-                            logger.log( LogService.LOG_DEBUG,
-                                    "getParameterClass: Found class {0}", new Object[] {referenceClass.getName()}, null );
-                        }
-                        return referenceClass;
-                    }
-                    catch ( ClassNotFoundException cnfe )
-                    {
-                        // exported package does not provide the interface !!!!
-                    }
-                }
-            }
-            else if ( logger.isLogEnabled( LogService.LOG_DEBUG ) )
-            {
-                logger.log( LogService.LOG_DEBUG,
-                    "getParameterClass: No bundles exporting package {0} found", new Object[] {referenceClassPackage}, null );
-            }
-        }
-        else if ( logger.isLogEnabled( LogService.LOG_DEBUG ) )
-        {
-            logger.log( LogService.LOG_DEBUG,
-                "getParameterClass: PackageAdmin service not available, cannot find class", null );
+            return referenceClass;
         }
 
         // class cannot be found, neither through the component nor from an
         // export, so we fall back to assuming Object
-        if ( logger.isLogEnabled( LogService.LOG_DEBUG ) )
+        if (logger.isLogEnabled(LogService.LOG_DEBUG))
         {
-            logger.log( LogService.LOG_DEBUG,
-                "getParameterClass: No class found, falling back to class Object", null );
+            logger.log(LogService.LOG_DEBUG,
+                "getParameterClass: No class found, falling back to class Object", null);
         }
         return OBJECT_CLASS;
+    }
+
+    private static Class<?> findClassFromFrameworkWiring(String className,
+        SimpleLogger logger)
+    {
+        FrameworkWiring fwkWiring = getFrameworkWiring();
+        if (fwkWiring == null)
+        {
+            if (logger.isLogEnabled(LogService.LOG_DEBUG))
+            {
+                logger.log(LogService.LOG_DEBUG,
+                    "getParameterClass: FrameworkWiring not available, cannot find class",
+                    null);
+            }
+            return null;
+        }
+
+        final String classPackage = className.substring(0, className.lastIndexOf('.'));
+        final String classPackageFilter = "(" + PackageNamespace.PACKAGE_NAMESPACE + "="
+            + classPackage + ")";
+        final Requirement pkgReq = new Requirement()
+        {
+
+            public Resource getResource()
+            {
+                return null;
+            }
+
+            public String getNamespace()
+            {
+                return PackageNamespace.PACKAGE_NAMESPACE;
+            }
+
+            public Map<String, String> getDirectives()
+            {
+                return Collections.singletonMap(PackageNamespace.PACKAGE_NAMESPACE,
+                    classPackageFilter);
+            }
+
+            public Map<String, Object> getAttributes()
+            {
+                return Collections.emptyMap();
+            }
+        };
+
+        Collection<BundleCapability> packageCaps = fwkWiring.findProviders(pkgReq);
+        for (BundleCapability packageCap : packageCaps)
+        {
+            try
+            {
+                BundleRevision revision = packageCap.getRevision();
+                if (logger.isLogEnabled(LogService.LOG_DEBUG))
+                {
+                    logger.log(LogService.LOG_DEBUG,
+                        "getParameterClass: Checking Bundle {0}/{1}",
+                        new Object[] { revision.getSymbolicName(),
+                                revision.getBundle().getBundleId() },
+                        null);
+                }
+                BundleWiring wiring = revision.getWiring();
+                if (wiring != null)
+                {
+                    Class<?> referenceClass = loadClass(wiring, className);
+                    if (logger.isLogEnabled(LogService.LOG_DEBUG))
+                    {
+                        logger.log(LogService.LOG_DEBUG,
+                            "getParameterClass: Found class {0}",
+                            new Object[] { referenceClass.getName() }, null);
+                    }
+                    return referenceClass;
+                }
+            }
+            catch (ClassNotFoundException cnfe)
+            {
+                // exported package does not provide the interface !!!!
+            }
+        }
+        if (logger.isLogEnabled(LogService.LOG_DEBUG))
+        {
+            logger.log( LogService.LOG_DEBUG,
+            "getParameterClass: No bundles exporting package {0} found",
+                new Object[] { classPackage }, null);
+        }
+        return null;
+    }
+
+
+    private static Class<?> loadClass(BundleWiring wiring, String className)
+        throws ClassNotFoundException
+    {
+        if ((wiring.getRevision().getTypes() & BundleRevision.TYPE_FRAGMENT) != 0)
+        {
+            // fragment case; just use first host
+            List<BundleWire> hostWires = wiring.getRequiredWires(
+                HostNamespace.HOST_NAMESPACE);
+            if (hostWires == null)
+            {
+                // this happens if the wiring got flushed before we could get
+                // the class loader.
+                throw new ClassNotFoundException(className);
+            }
+            wiring = hostWires.get(0).getProviderWiring();
+        }
+        ClassLoader loader = wiring.getClassLoader();
+        if (loader != null)
+        {
+            // again can happen if the wiring got flushed befoer we got here.
+            return loader.loadClass(className);
+        }
+        throw new ClassNotFoundException(className);
     }
 
     public static void setBundleContext( BundleContext bundleContext )
@@ -176,32 +250,25 @@ public class ClassUtils
         ClassUtils.m_context = bundleContext;
     }
 
-    public static Object getPackageAdmin()
+    private static FrameworkWiring getFrameworkWiring()
     {
-        if (m_packageAdmin == null)
+        if (m_fwkWiring == null)
         {
             synchronized (ClassUtils.class)
             {
-                if (m_packageAdmin == null)
+                if (m_fwkWiring == null)
                 {
-                    m_packageAdmin = new ServiceTracker(m_context, PACKAGEADMIN_CLASS,
-                        null);
-                    m_packageAdmin.open();
+                    m_fwkWiring = m_context.getBundle(Constants.SYSTEM_BUNDLE_LOCATION).adapt(FrameworkWiring.class);
                 }
             }
         }
 
-        return m_packageAdmin.getService();
+        return m_fwkWiring;
     }
 
     public static void close()
     {
-        // close the PackageAdmin tracker now
-        if (m_packageAdmin != null)
-        {
-            m_packageAdmin.close();
-            m_packageAdmin = null;
-        }
+        m_fwkWiring = null;
 
         // remove the reference to the component context
         m_context = null;
