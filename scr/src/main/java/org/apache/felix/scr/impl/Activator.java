@@ -20,6 +20,7 @@ package org.apache.felix.scr.impl;
 
 import java.io.PrintStream;
 import java.text.MessageFormat;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +31,8 @@ import java.util.concurrent.locks.ReentrantLock;
 import org.apache.felix.scr.impl.config.ScrConfigurationImpl;
 import org.apache.felix.scr.impl.helper.SimpleLogger;
 import org.apache.felix.scr.impl.inject.ClassUtils;
+import org.apache.felix.scr.impl.metadata.ComponentMetadata;
+import org.apache.felix.scr.impl.metadata.ComponentMetadataStore;
 import org.apache.felix.scr.impl.runtime.ServiceComponentRuntimeImpl;
 import org.apache.felix.utils.extender.AbstractExtender;
 import org.apache.felix.utils.extender.Extension;
@@ -40,6 +43,7 @@ import org.osgi.framework.ServiceRegistration;
 import org.osgi.framework.wiring.BundleRevision;
 import org.osgi.framework.wiring.BundleWire;
 import org.osgi.framework.wiring.BundleWiring;
+import org.osgi.framework.wiring.FrameworkWiring;
 import org.osgi.namespace.extender.ExtenderNamespace;
 import org.osgi.service.component.ComponentConstants;
 import org.osgi.service.component.runtime.ServiceComponentRuntime;
@@ -55,6 +59,9 @@ public class Activator extends AbstractExtender implements SimpleLogger
 {
     //  name of the LogService class (this is a string to not create a reference to the class)
     static final String LOGSERVICE_CLASS = "org.osgi.service.log.LogService";
+
+    // name of the metadata cache file
+    private final String METADATA_CACHE = "metadata.cache";
 
     // Our configuration from bundle context properties and Config Admin
     private ScrConfigurationImpl m_configuration;
@@ -83,6 +90,8 @@ public class Activator extends AbstractExtender implements SimpleLogger
 
     private ScrCommand m_scrCommand;
 
+    private final ComponentMetadataStore m_metadataStore = new ComponentMetadataStore();
+
     public Activator()
     {
         m_configuration = new ScrConfigurationImpl( this );
@@ -104,6 +113,8 @@ public class Activator extends AbstractExtender implements SimpleLogger
         // require the log service
         m_logService = new ServiceTracker<LogService, LogService>( m_context, LOGSERVICE_CLASS, null );
         m_logService.open();
+        // load the metadata store
+        m_metadataStore.load(m_context.getDataFile(METADATA_CACHE));
         // set bundle context for PackageAdmin tracker
         ClassUtils.setBundleContext( context );
         // get the configuration
@@ -181,6 +192,7 @@ public class Activator extends AbstractExtender implements SimpleLogger
         super.stop( context );
         m_configuration.stop();
         m_configuration = null;
+        m_metadataStore.save(context.getDataFile(METADATA_CACHE), context.getBundle(Constants.SYSTEM_BUNDLE_LOCATION).adapt(FrameworkWiring.class));
     }
 
     /**
@@ -313,8 +325,20 @@ public class Activator extends AbstractExtender implements SimpleLogger
      */
     private void loadComponents(Bundle bundle)
     {
-        if (bundle.getHeaders("").get(ComponentConstants.SERVICE_COMPONENT) == null)
+        List<ComponentMetadata> cached = getMetadataStore().getMetadata(bundle);
+        if (cached == null)
         {
+            if (bundle.getHeaders("").get(ComponentConstants.SERVICE_COMPONENT) == null)
+            {
+                // no header for DS; cache an empty list
+                getMetadataStore().addMetadata(bundle, Collections.<ComponentMetadata> emptyList());
+                // no components in the bundle, abandon
+                return;
+            }
+        }
+        else if (cached.isEmpty())
+        {
+            // cache indicates this bundle does not have the required header
             // no components in the bundle, abandon
             return;
         }
@@ -572,4 +596,8 @@ public class Activator extends AbstractExtender implements SimpleLogger
         }
     }
 
+    ComponentMetadataStore getMetadataStore()
+    {
+        return m_metadataStore;
+    }
 }

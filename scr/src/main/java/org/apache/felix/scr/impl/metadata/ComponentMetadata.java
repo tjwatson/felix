@@ -19,6 +19,7 @@
 package org.apache.felix.scr.impl.metadata;
 
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -36,8 +37,10 @@ import org.osgi.service.component.ComponentException;
 
 /**
  * This class holds the information associated to a component in the descriptor *  */
-public class ComponentMetadata
+public class ComponentMetadata implements Serializable
 {
+    private static final long serialVersionUID = 1L;
+
     // Configuration required for component activation (since DS 1.1)
     public static final String CONFIGURATION_POLICY_REQUIRE = "require";
 

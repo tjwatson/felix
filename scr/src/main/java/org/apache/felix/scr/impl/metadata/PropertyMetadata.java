@@ -18,6 +18,7 @@
  */
 package org.apache.felix.scr.impl.metadata;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -27,9 +28,11 @@ import java.util.StringTokenizer;
  * defined in the descriptor
  *
  */
-public class PropertyMetadata {
+public class PropertyMetadata implements Serializable {
 
-	// Name of the property (required)
+    private static final long serialVersionUID = 1L;
+
+    // Name of the property (required)
 	private String m_name;
 
 	// Type of the property (optional)

@@ -18,6 +18,7 @@
  */
 package org.apache.felix.scr.impl.metadata;
 
+import java.io.Serializable;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -27,9 +28,11 @@ import org.apache.felix.scr.impl.helper.Logger;
  * Information associated to a dependency
  *
  */
-public class ReferenceMetadata
+public class ReferenceMetadata implements Serializable
 {
-	public enum ReferenceScope {bundle, prototype, prototype_required}
+    private static final long serialVersionUID = 1L;
+
+    public enum ReferenceScope {bundle, prototype, prototype_required}
 
     // constant for option single reference - 0..1
     public static final String CARDINALITY_0_1 = "0..1";

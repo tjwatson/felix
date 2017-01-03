@@ -18,6 +18,7 @@
  */
 package org.apache.felix.scr.impl.metadata;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,9 +27,11 @@ import java.util.List;
  * by a component
  *
  */
-public class ServiceMetadata {
-	
-	public enum Scope { singleton, bundle, prototype}
+public class ServiceMetadata implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    public enum Scope { singleton, bundle, prototype}
 
 	// 112.4.6 Flag that indicates if the service is a ServiceFactory
 	private Boolean m_serviceFactory;
