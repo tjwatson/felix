@@ -50,10 +50,9 @@ public class ComponentMethodsImpl<T> implements ComponentMethods<T>
 
     @Override
     @SuppressWarnings({ "rawtypes", "unchecked" })
-	public synchronized void initComponentMethods(
-	        final ComponentMetadata componentMetadata,
-	        final Class<T> implementationObjectClass,
-	        final ComponentLogger logger)
+    public synchronized void initComponentMethods(
+        final ComponentMetadata componentMetadata,
+        final Class<T> implementationObjectClass, final ComponentLogger logger)
     {
         if (m_activateMethod != null)
         {
@@ -65,12 +64,9 @@ public class ComponentMethodsImpl<T> implements ComponentMethods<T>
         boolean supportsInterfaces = componentMetadata.isConfigureWithInterfaces();
 
         m_activateMethod = new ActivateMethod(
-        		componentMetadata.getActivate(),
-        		componentMetadata.isActivateDeclared(),
-        		implementationObjectClass,
-        		dsVersion,
-        		configurableServiceProperties,
-        		supportsInterfaces);
+            componentMetadata.getActivate(), componentMetadata.isActivateDeclared(),
+            implementationObjectClass, dsVersion, configurableServiceProperties,
+            supportsInterfaces);
         m_deactivateMethod = new DeactivateMethod( componentMetadata.getDeactivate(),
                 componentMetadata.isDeactivateDeclared(), implementationObjectClass, dsVersion, configurableServiceProperties, supportsInterfaces );
 
@@ -91,48 +87,49 @@ public class ComponentMethodsImpl<T> implements ComponentMethods<T>
 
             if ( methods.isEmpty() )
             {
-            	    bindMethodMap.put( refName, ReferenceMethods.NOPReferenceMethod );
+                bindMethodMap.put(refName, ReferenceMethods.NOPReferenceMethod);
             }
             else if ( methods.size() == 1 )
             {
-            	    bindMethodMap.put( refName, methods.get(0) );
+                bindMethodMap.put(refName, methods.get(0));
             }
             else
             {
-            	    bindMethodMap.put( refName, new DuplexReferenceMethods(methods) );
+                bindMethodMap.put(refName, new DuplexReferenceMethods(methods));
             }
         }
 
-    	    m_constructor = new ComponentConstructor(componentMetadata, implementationObjectClass, logger);
+        m_constructor = new ComponentConstructor(componentMetadata,
+            implementationObjectClass, logger);
     }
 
-	@Override
+    @Override
     public LifecycleMethod getActivateMethod()
     {
         return m_activateMethod;
     }
 
-	@Override
+    @Override
     public LifecycleMethod getDeactivateMethod()
     {
         return m_deactivateMethod;
     }
 
-	@Override
+    @Override
     public LifecycleMethod getModifiedMethod()
     {
         return m_modifiedMethod;
     }
 
-	@Override
+    @Override
     public ReferenceMethods getBindMethods(String refName )
     {
         return bindMethodMap.get( refName );
     }
 
-	@Override
-	public ComponentConstructor<T> getConstructor()
-	{
-		return m_constructor;
-	}
+    @Override
+    public ComponentConstructor<T> getConstructor()
+    {
+        return m_constructor;
+    }
 }
