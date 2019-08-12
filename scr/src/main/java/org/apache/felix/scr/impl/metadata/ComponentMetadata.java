@@ -34,6 +34,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.apache.felix.scr.impl.inject.methods.BaseMethod.CachedMethodInfo;
 import org.apache.felix.scr.impl.metadata.MetadataStoreHelper.MetaDataReader;
 import org.apache.felix.scr.impl.metadata.MetadataStoreHelper.MetaDataWriter;
 import org.apache.felix.scr.impl.metadata.ServiceMetadata.Scope;
@@ -150,6 +151,10 @@ public class ComponentMetadata
         CONFIGURATION_POLICY_VALID.add( CONFIGURATION_POLICY_REQUIRE );
     }
 
+    // following fields are used for caching to speed up constructor and lifecycle method discovery
+    private volatile CachedMethodInfo m_activateMethodInfo;
+    private volatile CachedMethodInfo m_modifiedMethodInfo;
+    private volatile CachedMethodInfo m_deactivateMethodInfo;
 
     public ComponentMetadata( final DSVersion dsVersion )
     {
@@ -1134,6 +1139,19 @@ public class ComponentMetadata
         {
             m_service.collectStrings(strings);
         }
+
+        collectStrings(m_activateMethodInfo, strings);
+        collectStrings(m_modifiedMethodInfo, strings);
+        collectStrings(m_deactivateMethodInfo, strings);
+    }
+
+    static void collectStrings(CachedMethodInfo cachedMethodInfo, Set<String> strings)
+    {
+        if (cachedMethodInfo == null)
+        {
+            return;
+        }
+        cachedMethodInfo.collectStrings(strings);
     }
 
     private void collectStrings(Entry<String, Object> entry, Set<String> strings)
@@ -1217,6 +1235,20 @@ public class ComponentMetadata
         {
             out.writeBoolean(m_immediate.booleanValue());
         }
+
+        store(m_activateMethodInfo, metaDataWriter, out);
+        store(m_modifiedMethodInfo, metaDataWriter, out);
+        store(m_deactivateMethodInfo, metaDataWriter, out);
+    }
+
+    static void store(CachedMethodInfo methodInfo, MetaDataWriter metaDataWriter,
+        DataOutputStream out) throws IOException
+    {
+        out.writeBoolean(methodInfo != null);
+        if (methodInfo != null)
+        {
+            methodInfo.store(metaDataWriter, out);
+        }
     }
 
     public static ComponentMetadata load(DataInputStream in,
@@ -1285,9 +1317,24 @@ public class ComponentMetadata
         {
             result.m_immediate = in.readBoolean();
         }
+
+        result.m_activateMethodInfo = loadCachedMethodInfo(metaDataReader, in);
+        result.m_modifiedMethodInfo = loadCachedMethodInfo(metaDataReader, in);
+        result.m_deactivateMethodInfo = loadCachedMethodInfo(metaDataReader, in);
+
         // we only store valid metadata
         result.m_validated = true;
         return result;
+    }
+
+    static CachedMethodInfo loadCachedMethodInfo(MetaDataReader metaDataReader,
+        DataInputStream in) throws IOException
+    {
+        if (in.readBoolean())
+        {
+            return CachedMethodInfo.load(metaDataReader, in);
+        }
+        return null;
     }
 
     private static final byte TypeString = 1;
@@ -1634,6 +1681,36 @@ public class ComponentMetadata
         }
         throw new IllegalArgumentException("Unsupported type: " + typeClass);
 
+    }
+
+    public CachedMethodInfo getActivateMethodInfo()
+    {
+        return m_activateMethodInfo;
+    }
+
+    public void setActivateMethodInfo(CachedMethodInfo m_activateMethodInfo)
+    {
+        this.m_activateMethodInfo = m_activateMethodInfo;
+    }
+
+    public CachedMethodInfo getModifiedMethodInfo()
+    {
+        return m_modifiedMethodInfo;
+    }
+
+    public void setModifiedMethodInfo(CachedMethodInfo m_modifyMethodInfo)
+    {
+        this.m_modifiedMethodInfo = m_modifyMethodInfo;
+    }
+
+    public CachedMethodInfo getDeactivateMethodInfo()
+    {
+        return m_deactivateMethodInfo;
+    }
+
+    public void setDeactivateMethodInfo(CachedMethodInfo m_deactivateMethodInfo)
+    {
+        this.m_deactivateMethodInfo = m_deactivateMethodInfo;
     }
 
 }

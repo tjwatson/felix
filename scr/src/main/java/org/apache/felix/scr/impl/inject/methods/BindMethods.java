@@ -22,7 +22,7 @@ package org.apache.felix.scr.impl.inject.methods;
 import org.apache.felix.scr.impl.inject.InitReferenceMethod;
 import org.apache.felix.scr.impl.inject.ReferenceMethod;
 import org.apache.felix.scr.impl.inject.ReferenceMethods;
-import org.apache.felix.scr.impl.metadata.DSVersion;
+import org.apache.felix.scr.impl.metadata.ComponentMetadata;
 import org.apache.felix.scr.impl.metadata.ReferenceMetadata;
 
 /**
@@ -34,27 +34,14 @@ public class BindMethods implements ReferenceMethods
     private final ReferenceMethod m_updated;
     private final ReferenceMethod m_unbind;
 
-    public BindMethods( ReferenceMetadata m_dependencyMetadata, Class<?> instanceClass,
-            final DSVersion dsVersion, final boolean configurableServiceProperties )
+    public BindMethods(ComponentMetadata componentMetadata, ReferenceMetadata dependencyMetadata, Class<?> instanceClass)
     {
-        m_bind = new BindMethod(
-                m_dependencyMetadata.getBind(),
-                instanceClass,
-                m_dependencyMetadata.getInterface(),
-                dsVersion, configurableServiceProperties
-        );
-        m_updated = new UpdatedMethod(
-                m_dependencyMetadata.getUpdated(),
-                instanceClass,
-                m_dependencyMetadata.getInterface(),
-                dsVersion, configurableServiceProperties
-        );
-        m_unbind = new UnbindMethod(
-                m_dependencyMetadata.getUnbind(),
-                instanceClass,
-                m_dependencyMetadata.getInterface(),
-                dsVersion, configurableServiceProperties
-        );
+        m_bind = new BindMethod(instanceClass, componentMetadata, dependencyMetadata);
+
+        m_updated = new UpdatedMethod(instanceClass, componentMetadata,
+            dependencyMetadata);
+
+        m_unbind = new UnbindMethod(instanceClass, componentMetadata, dependencyMetadata);
     }
 
     public ReferenceMethod getBind()

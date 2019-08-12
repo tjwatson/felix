@@ -18,7 +18,8 @@
  */
 package org.apache.felix.scr.impl.inject.methods;
 
-import org.apache.felix.scr.impl.metadata.DSVersion;
+import org.apache.felix.scr.impl.metadata.ComponentMetadata;
+import org.apache.felix.scr.impl.metadata.ReferenceMetadata;
 
 
 /**
@@ -28,10 +29,16 @@ public class UpdatedMethod extends BindMethod
 implements org.apache.felix.scr.impl.inject.ReferenceMethod
 {
 
-    public UpdatedMethod( final String methodName,
-            final Class<?> componentClass, final String referenceClassName, final DSVersion dsVersion, final boolean configurableServiceProperties )
+    public UpdatedMethod(final Class<?> componentClass, //
+        final ComponentMetadata compMetadata, //
+        final ReferenceMetadata refMetadata)
     {
-        super( methodName, componentClass, referenceClassName, dsVersion, configurableServiceProperties );
+        super( //
+            refMetadata.getUpdated(), //
+            refMetadata.getUpdated() != null, //
+            componentClass, //
+            compMetadata, //
+            refMetadata);
     }
 
 
@@ -40,5 +47,4 @@ implements org.apache.felix.scr.impl.inject.ReferenceMethod
     {
         return "update";
     }
-
 }

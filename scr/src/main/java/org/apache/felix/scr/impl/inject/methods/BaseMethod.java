@@ -18,27 +18,39 @@
  */
 package org.apache.felix.scr.impl.inject.methods;
 
+import static org.apache.felix.scr.impl.metadata.MetadataStoreHelper.addString;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.felix.scr.impl.inject.BaseParameter;
 import org.apache.felix.scr.impl.inject.ClassUtils;
 import org.apache.felix.scr.impl.inject.MethodResult;
+import org.apache.felix.scr.impl.inject.ValueUtils.ValueType;
 import org.apache.felix.scr.impl.logger.ComponentLogger;
+import org.apache.felix.scr.impl.metadata.ComponentMetadata;
 import org.apache.felix.scr.impl.metadata.DSVersion;
+import org.apache.felix.scr.impl.metadata.MetadataStoreHelper.MetaDataReader;
+import org.apache.felix.scr.impl.metadata.MetadataStoreHelper.MetaDataWriter;
 import org.osgi.service.log.LogService;
 
 
 /**
  * Component method to be invoked on service (un)binding.
  */
-public abstract class BaseMethod<P extends BaseParameter, T>
+public abstract class BaseMethod<P extends BaseParameter>
 {
 
     private final DSVersion dsVersion;
@@ -56,14 +68,13 @@ public abstract class BaseMethod<P extends BaseParameter, T>
     protected BaseMethod( final String methodName,
             final boolean methodRequired,
             final Class<?> componentClass,
-            final DSVersion dsVersion,
-            final boolean configurableServiceProperties )
+            final ComponentMetadata componentMetadata)
     {
         m_methodName = methodName;
         m_methodRequired = methodRequired;
         m_componentClass = componentClass;
-        this.dsVersion = dsVersion;
-        this.configurableServiceProperties = configurableServiceProperties;
+        this.dsVersion = componentMetadata.getDSVersion();
+        this.configurableServiceProperties = componentMetadata.isConfigurableServiceProperties();
         if ( m_methodName == null )
         {
             m_state = NotApplicable.INSTANCE;
@@ -101,9 +112,9 @@ public abstract class BaseMethod<P extends BaseParameter, T>
         return m_componentClass;
     }
 
-    protected abstract void setTypes(T types);
+    protected abstract void setTypes(List<ValueType> types);
 
-    synchronized void setMethod(MethodInfo<T> methodInfo, ComponentLogger logger)
+    synchronized void setMethod(MethodInfo methodInfo, ComponentLogger logger)
     {
         this.m_method = methodInfo == null ? null : methodInfo.getMethod();
 
@@ -149,7 +160,8 @@ public abstract class BaseMethod<P extends BaseParameter, T>
      *      trying to find the requested method.
      * @param logger
      */
-    private MethodInfo<T> findMethod(final ComponentLogger logger) throws InvocationTargetException
+    private MethodInfo findMethod(final ComponentLogger logger)
+        throws InvocationTargetException
     {
         boolean acceptPrivate = getDSVersion().isDS11();
         boolean acceptPackage = getDSVersion().isDS11();
@@ -157,39 +169,82 @@ public abstract class BaseMethod<P extends BaseParameter, T>
         final Class<?> targetClass = getComponentClass();
         final ClassLoader targetClasslLoader = targetClass.getClassLoader();
         final String targetPackage = getPackageName( targetClass );
-        Class<?> theClass = targetClass;
 
+        CachedMethodInfo cachedMethodInfo = getCachedMethodInfo();
+        if (cachedMethodInfo != null)
+        {
+            if (cachedMethodInfo == CachedMethodInfo.NULL_METHOD_INFO)
+            {
+                return null;
+            }
+            MethodInfo method = findMethodForClass(targetClass, targetClasslLoader,
+                targetPackage, logger, acceptPrivate, acceptPackage, cachedMethodInfo);
+            if (method != null)
+            {
+                return method;
+            }
+            if (logger.isLogEnabled(LogService.LOG_DEBUG))
+            {
+                logger.log(LogService.LOG_DEBUG, "Did not find method " + getMethodName()
+                    + " with cached info in class " + targetClass.getName(), null);
+            }
+        }
+        return findMethodForClass(targetClass, targetClasslLoader, targetPackage, logger,
+            acceptPrivate, acceptPackage, null);
+    }
+
+    protected abstract CachedMethodInfo getCachedMethodInfo();
+
+    private MethodInfo findMethodForClass(final Class<?> targetClass,
+        final ClassLoader targetClasslLoader, final String targetPackage,
+        final ComponentLogger logger, boolean acceptPrivate, boolean acceptPackage,
+        final CachedMethodInfo cachedMethodInfo) throws InvocationTargetException
+    {
+        Class<?> theClass = targetClass;
         while (true)
         {
-
-            if ( logger.isLogEnabled( LogService.LOG_DEBUG ) )
+            if (logger.isLogEnabled(LogService.LOG_DEBUG))
             {
-                logger.log( LogService.LOG_DEBUG,
-                        "Locating method " + getMethodName() + " in class " + theClass.getName(), null );
+                logger.log(LogService.LOG_DEBUG, "Locating method " + getMethodName()
+                    + " in class " + theClass.getName(), null);
             }
 
             try
             {
-                MethodInfo<T> method = doFindMethod(theClass, acceptPrivate,
-                    acceptPackage,
-                    logger);
-                if ( method != null )
+                MethodInfo method = null;
+                if (cachedMethodInfo != null)
                 {
+                    method = cachedMethodInfo.getMethodInfo(this, theClass, acceptPrivate,
+                            acceptPackage, logger);
+                }
+                else
+                {
+                    method = doFindMethod(theClass, acceptPrivate, acceptPackage, logger);
+                }
+                if (method != null)
+                {
+                    setCachedMethodInfo(targetClass, method);
                     return method;
                 }
             }
-            catch ( SuitableMethodNotAccessibleException ex )
+            catch (SuitableMethodNotAccessibleException ex)
             {
                 // log and return null
-                logger.log( LogService.LOG_ERROR,
-                        "findMethod: Suitable but non-accessible method {0} found in class {1}, subclass of {2}", null,
-                                getMethodName(), theClass.getName(), targetClass.getName() );
+                logger.log(LogService.LOG_ERROR,
+                    "findMethod: Suitable but non-accessible method {0} found in class {1}, subclass of {2}",
+                    null, getMethodName(), theClass.getName(), targetClass.getName());
+                return null;
+            }
+
+            if (cachedMethodInfo != null && cachedMethodInfo.isDeclaredInComponentClass())
+            {
+                // no need to search super classes
                 break;
             }
 
             // if we get here, we have no method, so check the super class
             theClass = theClass.getSuperclass();
-            if ( theClass == null )
+            if (theClass == null)
             {
                 break;
             }
@@ -198,18 +253,20 @@ public abstract class BaseMethod<P extends BaseParameter, T>
             // package methods only if in the same package and package
             // methods are (still) allowed
             acceptPackage &= targetClasslLoader == theClass.getClassLoader()
-                    && targetPackage.equals( getPackageName( theClass ) );
+                && targetPackage.equals(getPackageName(theClass));
 
             // private methods will not be accepted any more in super classes
             acceptPrivate = false;
         }
-
-        // nothing found after all these years ...
+        // record that no method was found
+        setCachedMethodInfo(targetClass, null);
         return null;
     }
 
+    protected abstract void setCachedMethodInfo(Class<?> componentClass,
+        MethodInfo methodInfo);
 
-    protected abstract MethodInfo<T> doFindMethod(Class<?> targetClass,
+    protected abstract MethodInfo doFindMethod(Class<?> targetClass,
         boolean acceptPrivate,
         boolean acceptPackage,
         ComponentLogger logger ) throws SuitableMethodNotAccessibleException, InvocationTargetException;
@@ -226,6 +283,7 @@ public abstract class BaseMethod<P extends BaseParameter, T>
         return result;
     }
 
+    @SuppressWarnings("unchecked")
     private MethodResult invokeMethod(final Object componentInstance, final P rawParameter )
             throws InvocationTargetException
     {
@@ -328,7 +386,7 @@ public abstract class BaseMethod<P extends BaseParameter, T>
      */
     public /* static */ Method getMethod( Class<?> clazz,
             String name,
-            Class[] parameterTypes,
+            Class<?>[] parameterTypes,
             boolean acceptPrivate,
             boolean acceptPackage,
             ComponentLogger logger ) throws SuitableMethodNotAccessibleException,
@@ -542,17 +600,17 @@ public abstract class BaseMethod<P extends BaseParameter, T>
         return m_state.methodExists( this, logger );
     }
 
-    protected static final class MethodInfo<T>
+    protected static final class MethodInfo
     {
         private final Method m_method;
-        private final T m_types;
+        private final List<ValueType> m_types;
 
         public MethodInfo(Method m)
         {
             this(m, null);
         }
 
-        public MethodInfo(Method m, T types)
+        public MethodInfo(Method m, List<ValueType> types)
         {
             m_method = m;
             m_types = types;
@@ -563,20 +621,194 @@ public abstract class BaseMethod<P extends BaseParameter, T>
             return m_method;
         }
 
-        public T getTypes()
+        public List<ValueType> getTypes()
         {
             return m_types;
+        }
+    }
+
+    public static final class CachedMethodInfo
+    {
+        public static final String NULL_METHOD_INFO_TOKEN = "++NULL_METHOD_INFO_TOKEN++";
+        public static final CachedMethodInfo NULL_METHOD_INFO = new CachedMethodInfo(
+            NULL_METHOD_INFO_TOKEN, null, null);
+        final String m_declaringClassName;
+        final List<String> m_methodArgTypes;
+        final List<ValueType> m_valueTypes;
+
+        public static CachedMethodInfo createdCacheMethodInfo(Class<?> componentClass,
+            MethodInfo methodInfo)
+        {
+            if (methodInfo == null)
+            {
+                return NULL_METHOD_INFO;
+            }
+            return new CachedMethodInfo(componentClass, methodInfo);
+        }
+
+        boolean isDeclaredInComponentClass()
+        {
+            return m_declaringClassName == null;
+        }
+
+        private CachedMethodInfo(Class<?> componentClass, MethodInfo methodInfo)
+        {
+            this( //
+                componentClass == methodInfo.getMethod().getDeclaringClass() //
+                    ? null //
+                    : methodInfo.getMethod().getDeclaringClass().getName(), //
+                ClassUtils.getClassNames(methodInfo.getMethod().getParameterTypes()), //
+                methodInfo.getTypes() //
+            );
+        }
+
+        public static CachedMethodInfo createCacheMethodInfo(String declaringClassName,
+            List<String> methodArgTypes, List<ValueType> valueTypes)
+        {
+            if (NULL_METHOD_INFO_TOKEN.equals(declaringClassName))
+            {
+                return NULL_METHOD_INFO;
+            }
+            return new CachedMethodInfo(declaringClassName, methodArgTypes, valueTypes);
+        }
+
+        private CachedMethodInfo(String declaringClassName, List<String> methodArgTypes, List<ValueType> valueTypes)
+        {
+            this.m_declaringClassName = declaringClassName;
+            this.m_methodArgTypes = methodArgTypes;
+            this.m_valueTypes = valueTypes;
+        }
+
+        MethodInfo getMethodInfo(final BaseMethod<?> baseMethod, final Class<?> theClass,
+            final boolean acceptPrivate, final boolean acceptPackage,
+            final ComponentLogger logger)
+            throws SuitableMethodNotAccessibleException, InvocationTargetException
+        {
+            if (m_declaringClassName == null
+                || theClass.getName().equals(m_declaringClassName))
+            {
+                try
+                {
+                    Class<?>[] methodArgTypes = ClassUtils.getArgumentTypes(
+                        m_methodArgTypes, theClass);
+                    Method m = baseMethod.getMethod(theClass, baseMethod.getMethodName(),
+                        methodArgTypes, acceptPrivate, acceptPackage, logger);
+                    return new MethodInfo(m, m_valueTypes);
+                }
+                catch (ClassNotFoundException e)
+                {
+                    // continue to next super class
+                }
+            }
+            return null;
+        }
+
+        public void collectStrings(Set<String> strings)
+        {
+            addString(m_declaringClassName, strings);
+            if (m_methodArgTypes != null)
+            {
+                for (String type : m_methodArgTypes)
+                {
+                    addString(type, strings);
+                }
+            }
+            if (m_valueTypes != null)
+            {
+                for (ValueType type : m_valueTypes)
+                {
+                    addString(type.name(), strings);
+                }
+            }
+        }
+
+        public void store(MetaDataWriter metaDataWriter, DataOutputStream out)
+            throws IOException
+        {
+            metaDataWriter.writeString(m_declaringClassName, out);
+            out.writeBoolean(m_methodArgTypes != null);
+            if (m_methodArgTypes != null)
+            {
+                out.writeInt(m_methodArgTypes.size());
+                for (String type : m_methodArgTypes)
+                {
+                    metaDataWriter.writeString(type, out);
+                }
+            }
+            out.writeBoolean(m_valueTypes != null);
+            if (m_valueTypes != null)
+            {
+                out.writeInt(m_valueTypes.size());
+                for (ValueType type : m_valueTypes)
+                {
+                    metaDataWriter.writeString(type.name(), out);
+                }
+            }
+        }
+
+        public static CachedMethodInfo load(MetaDataReader metaDataReader,
+            DataInputStream in) throws IOException
+        {
+            String declaringClassName = metaDataReader.readString(in);
+            List<String> methodArgTypes = null;
+            if (in.readBoolean())
+            {
+                int size = in.readInt();
+                if (size == 0)
+                {
+                    methodArgTypes = Collections.emptyList();
+                }
+                else if (size == 1)
+                {
+                    methodArgTypes = Collections.singletonList(
+                        metaDataReader.readString(in));
+                }
+                else
+                {
+                    methodArgTypes = new ArrayList<String>(size);
+                    for (int i = 0; i < size; i++)
+                    {
+                        methodArgTypes.add(metaDataReader.readString(in));
+                    }
+                }
+            }
+            List<ValueType> valueTypes = null;
+            if (in.readBoolean())
+            {
+                int size = in.readInt();
+                if (size == 0)
+                {
+                    valueTypes = Collections.emptyList();
+                }
+                else if (size == 1)
+                {
+                    valueTypes = Collections.singletonList(
+                        ValueType.valueOf(metaDataReader.readString(in)));
+                }
+                else
+                {
+                    valueTypes = new ArrayList<ValueType>(size);
+                    for (int i = 0; i < size; i++)
+                    {
+                        valueTypes.add(ValueType.valueOf(metaDataReader.readString(in)));
+                    }
+                }
+            }
+            return CachedMethodInfo.createCacheMethodInfo(declaringClassName,
+                methodArgTypes, valueTypes);
         }
     }
 
     private static interface State
     {
 
-        <P extends BaseParameter, T> MethodResult invoke( BaseMethod<P, T> baseMethod, Object componentInstance, P rawParameter )
+        <P extends BaseParameter> MethodResult invoke(BaseMethod<P> baseMethod,
+            Object componentInstance, P rawParameter)
                 throws InvocationTargetException;
 
 
-        <P extends BaseParameter, T> boolean methodExists( BaseMethod<P, T> baseMethod, ComponentLogger logger );
+        <P extends BaseParameter> boolean methodExists(BaseMethod<P> baseMethod,
+            ComponentLogger logger);
     }
 
     private static class NotApplicable implements State
@@ -586,14 +818,17 @@ public abstract class BaseMethod<P extends BaseParameter, T>
 
 
         @Override
-        public <P extends BaseParameter, T> MethodResult invoke( final BaseMethod<P, T> baseMethod, final Object componentInstance, final P rawParameter )
+        public <P extends BaseParameter> MethodResult invoke(
+            final BaseMethod<P> baseMethod, final Object componentInstance,
+            final P rawParameter)
         {
             return MethodResult.VOID;
         }
 
 
         @Override
-        public <P extends BaseParameter, T> boolean methodExists( final BaseMethod<P, T> baseMethod, ComponentLogger logger )
+        public <P extends BaseParameter> boolean methodExists(
+            final BaseMethod<P> baseMethod, ComponentLogger logger)
         {
             return true;
         }
@@ -604,13 +839,14 @@ public abstract class BaseMethod<P extends BaseParameter, T>
         private static final State INSTANCE = new NotResolved();
 
 
-        private <P extends BaseParameter, T> void resolve( final BaseMethod<P, T> baseMethod, ComponentLogger logger )
+        private <P extends BaseParameter> void resolve(final BaseMethod<P> baseMethod,
+            ComponentLogger logger)
         {
             logger.log( LogService.LOG_DEBUG, "getting {0}: {1}", null,
                     baseMethod.getMethodNamePrefix(), baseMethod.getMethodName() );
 
             // resolve the method
-            MethodInfo<T> method = null;
+            MethodInfo method = null;
             try
             {
                 method = baseMethod.findMethod( logger );
@@ -626,7 +862,9 @@ public abstract class BaseMethod<P extends BaseParameter, T>
 
 
         @Override
-        public <P extends BaseParameter, T> MethodResult invoke( final BaseMethod<P, T> baseMethod, final Object componentInstance, final P rawParameter )
+        public <P extends BaseParameter> MethodResult invoke(
+            final BaseMethod<P> baseMethod, final Object componentInstance,
+            final P rawParameter)
                 throws InvocationTargetException
         {
             resolve( baseMethod, rawParameter.getComponentContext().getLogger() );
@@ -635,7 +873,8 @@ public abstract class BaseMethod<P extends BaseParameter, T>
 
 
         @Override
-        public <P extends BaseParameter, T> boolean methodExists( final BaseMethod<P, T> baseMethod, ComponentLogger logger )
+        public <P extends BaseParameter> boolean methodExists(
+            final BaseMethod<P> baseMethod, ComponentLogger logger)
         {
             resolve( baseMethod, logger );
             return baseMethod.getState().methodExists( baseMethod, logger );
@@ -648,7 +887,9 @@ public abstract class BaseMethod<P extends BaseParameter, T>
 
 
         @Override
-        public <P extends BaseParameter, T> MethodResult invoke( final BaseMethod<P, T> baseMethod, final Object componentInstance, final P rawParameter )
+        public <P extends BaseParameter> MethodResult invoke(
+            final BaseMethod<P> baseMethod, final Object componentInstance,
+            final P rawParameter)
         {
             // 112.3.1 If the method is not found , SCR must log an error
             // message with the log service, if present, and ignore the
@@ -660,7 +901,8 @@ public abstract class BaseMethod<P extends BaseParameter, T>
 
 
         @Override
-        public <P extends BaseParameter, T> boolean methodExists( final BaseMethod<P, T> baseMethod, ComponentLogger logger )
+        public <P extends BaseParameter> boolean methodExists(
+            final BaseMethod<P> baseMethod, ComponentLogger logger)
         {
             return false;
         }
@@ -672,7 +914,9 @@ public abstract class BaseMethod<P extends BaseParameter, T>
 
 
         @Override
-        public <P extends BaseParameter, T> MethodResult invoke( final BaseMethod<P, T> baseMethod, final Object componentInstance, final P rawParameter )
+        public <P extends BaseParameter> MethodResult invoke(
+            final BaseMethod<P> baseMethod, final Object componentInstance,
+            final P rawParameter)
                 throws InvocationTargetException
         {
             return baseMethod.invokeMethod( componentInstance, rawParameter );
@@ -680,7 +924,8 @@ public abstract class BaseMethod<P extends BaseParameter, T>
 
 
         @Override
-        public <P extends BaseParameter, T> boolean methodExists( final BaseMethod<P, T> baseMethod, ComponentLogger logger )
+        public <P extends BaseParameter> boolean methodExists(
+            final BaseMethod<P> baseMethod, ComponentLogger logger)
         {
             return true;
         }

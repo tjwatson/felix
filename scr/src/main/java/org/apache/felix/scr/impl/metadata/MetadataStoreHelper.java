@@ -31,7 +31,7 @@ public class MetadataStoreHelper
 {
     // The version of the component metadata store.  If the
     // stored metadata is not this version then the cache is ignored
-    static final int STORE_VERSION = 1;
+    static final int STORE_VERSION = 2;
 
     static final byte STRING_NULL = 0;
     static final byte STRING_OBJECT = 1;

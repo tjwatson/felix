@@ -61,16 +61,15 @@ public class ComponentMethodsImpl<T> implements ComponentMethods<T>
         }
         DSVersion dsVersion = componentMetadata.getDSVersion();
         boolean configurableServiceProperties = componentMetadata.isConfigurableServiceProperties();
-        boolean supportsInterfaces = componentMetadata.isConfigureWithInterfaces();
 
-        m_activateMethod = new ActivateMethod(
-            componentMetadata.getActivate(), componentMetadata.isActivateDeclared(),
-            implementationObjectClass, dsVersion, configurableServiceProperties,
-            supportsInterfaces);
-        m_deactivateMethod = new DeactivateMethod( componentMetadata.getDeactivate(),
-                componentMetadata.isDeactivateDeclared(), implementationObjectClass, dsVersion, configurableServiceProperties, supportsInterfaces );
+        m_activateMethod = new ActivateMethod(componentMetadata,
+            implementationObjectClass);
 
-        m_modifiedMethod = new ModifiedMethod( componentMetadata.getModified(), implementationObjectClass, dsVersion, configurableServiceProperties, supportsInterfaces );
+        m_deactivateMethod = new DeactivateMethod(componentMetadata,
+            implementationObjectClass);
+
+        m_modifiedMethod = new ModifiedMethod(componentMetadata,
+            implementationObjectClass);
 
         for ( ReferenceMetadata referenceMetadata: componentMetadata.getDependencies() )
         {
@@ -82,7 +81,8 @@ public class ComponentMethodsImpl<T> implements ComponentMethods<T>
             }
             if ( referenceMetadata.getBind() != null )
             {
-                methods.add(new BindMethods( referenceMetadata, implementationObjectClass, dsVersion, configurableServiceProperties));
+                methods.add(new BindMethods(componentMetadata, referenceMetadata,
+                    implementationObjectClass));
             }
 
             if ( methods.isEmpty() )

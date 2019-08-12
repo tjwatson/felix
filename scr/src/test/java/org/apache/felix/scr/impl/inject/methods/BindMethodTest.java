@@ -16,11 +16,12 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.felix.scr.impl.inject;
+package org.apache.felix.scr.impl.inject.methods;
 
 
 import org.apache.felix.scr.impl.MockBundle;
-import org.apache.felix.scr.impl.inject.methods.BindMethod;
+import org.apache.felix.scr.impl.inject.BindParameters;
+import org.apache.felix.scr.impl.inject.ComponentMethodsImpl;
 import org.apache.felix.scr.impl.logger.ComponentLogger;
 import org.apache.felix.scr.impl.logger.MockComponentLogger;
 import org.apache.felix.scr.impl.manager.ComponentActivator;
@@ -37,6 +38,7 @@ import org.apache.felix.scr.impl.manager.components.T3;
 import org.apache.felix.scr.impl.manager.components2.T2;
 import org.apache.felix.scr.impl.metadata.ComponentMetadata;
 import org.apache.felix.scr.impl.metadata.DSVersion;
+import org.apache.felix.scr.impl.metadata.ReferenceMetadata;
 import org.mockito.Mockito;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.Constants;
@@ -445,10 +447,15 @@ public class BindMethodTest extends TestCase
     private void testMethod( final String methodName, final T1 component, final DSVersion dsVersion,
         final String expectCallPerformed )
     {
+        ComponentMetadata componentMetadata = new ComponentMetadata(dsVersion);
+        ReferenceMetadata referenceMetadata = new ReferenceMetadata();
+        referenceMetadata.setBind(methodName);
+        referenceMetadata.setInterface(FakeService.class.getName());
+
         ComponentContainer container = newContainer();
         SingleComponentManager icm = new SingleComponentManager( container, new ComponentMethodsImpl() );
-        BindMethod bm = new BindMethod( methodName, component.getClass(),
-                FakeService.class.getName(), dsVersion, false );
+        BindMethod bm = new BindMethod(component.getClass(), componentMetadata,
+            referenceMetadata);
         RefPair refPair = new SingleRefPair( m_serviceReference );
         ComponentContextImpl<T1> cc = new ComponentContextImpl(icm, new MockBundle(), null);
         assertTrue( bm.getServiceObject( new BindParameters(cc, refPair), m_context ) );

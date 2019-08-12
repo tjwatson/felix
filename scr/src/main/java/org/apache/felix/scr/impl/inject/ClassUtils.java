@@ -18,7 +18,9 @@
  */
 package org.apache.felix.scr.impl.inject;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -227,4 +229,91 @@ public class ClassUtils
         return ( dot > 0 ) ? name.substring( 0, dot ) : "";
     }
 
+    public static Class<?>[] getArgumentTypes(List<String> argTypes, Class<?> targetClazz)
+        throws ClassNotFoundException
+    {
+        if (argTypes == null)
+        {
+            return null;
+        }
+        if (argTypes.isEmpty())
+        {
+            return new Class<?>[0];
+        }
+        ClassLoader targetClassLoader = targetClazz.getClassLoader();
+        Class<?>[] result = new Class<?>[argTypes.size()];
+        int i = 0;
+        for (String argType : argTypes)
+        {
+            Class<?> clazz = loadClass(argType, targetClassLoader);
+            result[i] = clazz;
+            i++;
+        }
+        return result;
+    }
+
+    public static List<String> getClassNames(Class<?>[] classes)
+    {
+        if (classes.length == 0)
+        {
+            return Collections.emptyList();
+        }
+        List<String> result = new ArrayList<String>(classes.length);
+        for (Class<?> clazz : classes)
+        {
+            result.add(clazz.getName());
+        }
+        return Collections.unmodifiableList(result);
+    }
+
+    private static Class<?> loadClass(final String className, ClassLoader cl)
+        throws ClassNotFoundException
+    {
+        switch (className)
+        {
+            case "boolean":
+                return boolean.class;
+            case "boolean[]":
+                return boolean[].class;
+            case "byte":
+                return byte.class;
+            case "byte[]":
+                return byte.class;
+            case "short":
+                return short.class;
+            case "short[]":
+                return short[].class;
+            case "int":
+                return int.class;
+            case "int[]":
+                return int[].class;
+            case "long":
+                return long.class;
+            case "long[]":
+                return long[].class;
+            case "float":
+                return float.class;
+            case "float[]":
+                return float[].class;
+            case "double":
+                return double.class;
+            case "double[]":
+                return double[].class;
+            case "char":
+                return char.class;
+            case "char[]":
+                return char[].class;
+            case "void":
+                return void.class;
+            default:
+                if (cl == null)
+                {
+                    return Class.forName(className);
+                }
+                else
+                {
+                    return cl.loadClass(className);
+                }
+        }
+    }
 }

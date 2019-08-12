@@ -18,7 +18,7 @@
  */
 package org.apache.felix.scr.impl.inject.methods;
 
-import org.apache.felix.scr.impl.metadata.DSVersion;
+import org.apache.felix.scr.impl.metadata.ComponentMetadata;
 
 
 public class DeactivateMethod extends ActivateMethod
@@ -30,10 +30,15 @@ public class DeactivateMethod extends ActivateMethod
         return true;
     }
 
-    public DeactivateMethod( final String methodName,
-            final boolean methodRequired, final Class<?> componentClass, final DSVersion dsVersion, final boolean configurableServiceProperties, boolean supportsInterfaces )
+    public DeactivateMethod( final ComponentMetadata metadata,
+        final Class<?> componentClass)
     {
-        super( methodName, methodRequired, componentClass, dsVersion, configurableServiceProperties, supportsInterfaces );
+        super( //
+            metadata.getDeactivate(), //
+            metadata.isDeactivateDeclared(), //
+            componentClass, //
+            metadata //
+        );
     }
 
     protected String getMethodNamePrefix()
@@ -41,4 +46,16 @@ public class DeactivateMethod extends ActivateMethod
         return "deactivate";
     }
 
+    @Override
+    protected CachedMethodInfo getCachedMethodInfo()
+    {
+        return m_componentMetadata.getDeactivateMethodInfo();
+    }
+
+    @Override
+    protected void setCachedMethodInfo(Class<?> componentClass, MethodInfo methodInfo)
+    {
+        m_componentMetadata.setDeactivateMethodInfo(
+            CachedMethodInfo.createdCacheMethodInfo(componentClass, methodInfo));
+    }
 }

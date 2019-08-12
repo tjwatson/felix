@@ -31,7 +31,8 @@ import org.apache.felix.scr.impl.inject.ValueUtils;
 import org.apache.felix.scr.impl.logger.ComponentLogger;
 import org.apache.felix.scr.impl.manager.ComponentContextImpl;
 import org.apache.felix.scr.impl.manager.RefPair;
-import org.apache.felix.scr.impl.metadata.DSVersion;
+import org.apache.felix.scr.impl.metadata.ComponentMetadata;
+import org.apache.felix.scr.impl.metadata.ReferenceMetadata;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.log.LogService;
 
@@ -39,24 +40,43 @@ import org.osgi.service.log.LogService;
 /**
  * Component method to be invoked on service (un)binding.
  */
-public class BindMethod extends BaseMethod<BindParameters, List<ValueUtils.ValueType>>
+public class BindMethod extends BaseMethod<BindParameters>
 implements org.apache.felix.scr.impl.inject.ReferenceMethod
 {
+
     private final String m_referenceClassName;
 
     //initialized for cases where there is no method.
     private volatile List<ValueUtils.ValueType> m_paramTypes = Collections.emptyList();
 
-    public BindMethod( final String methodName,
-            final Class<?> componentClass,
-            final String referenceClassName,
-            final DSVersion dsVersion,
-            final boolean configurableServiceProperties )
+    public BindMethod(
+        final Class<?> componentClass, //
+        final ComponentMetadata compMetadata, //
+        final ReferenceMetadata refMetadata)
     {
-        super( methodName, methodName != null, componentClass, dsVersion, configurableServiceProperties );
-        m_referenceClassName = referenceClassName;
+        super( //
+            refMetadata.getBind(), //
+            refMetadata.getBind() != null, //
+            componentClass, //
+            compMetadata);
+        m_referenceClassName = refMetadata.getInterface();
     }
 
+    protected BindMethod( //
+        final String methodName, //
+        final boolean methodRequired, //
+        final Class<?> componentClass, //
+        final ComponentMetadata compMetadata, //
+        final ReferenceMetadata refMetadata)
+    {
+        super( //
+            methodName, //
+            methodRequired, //
+            componentClass, //
+            compMetadata //
+        );
+        m_referenceClassName = refMetadata.getInterface();
+    }
 
     /**
      * Finds the method named in the {@link #m_methodName} field in the given
@@ -77,7 +97,7 @@ implements org.apache.felix.scr.impl.inject.ReferenceMethod
      *      trying to find the requested method.
      */
     @Override
-    protected MethodInfo<List<ValueUtils.ValueType>> doFindMethod( final Class<?> targetClass,
+    protected MethodInfo doFindMethod(final Class<?> targetClass,
             final boolean acceptPrivate,
             final boolean acceptPackage,
             final ComponentLogger logger )
@@ -113,7 +133,8 @@ implements org.apache.felix.scr.impl.inject.ReferenceMethod
                 {
                     logger.log( LogService.LOG_DEBUG, "doFindMethod: Found Method " + method, null );
                 }
-                return new MethodInfo<>(method, Collections.singletonList(ValueUtils.ValueType.ref_serviceReference));
+                return new MethodInfo(method,
+                    Collections.singletonList(ValueUtils.ValueType.ref_serviceReference));
             }
         }
         catch ( SuitableMethodNotAccessibleException ex )
@@ -133,7 +154,8 @@ implements org.apache.felix.scr.impl.inject.ReferenceMethod
                     {
                         logger.log( LogService.LOG_DEBUG, "doFindMethod: Found Method " + method, null );
                     }
-                    return new MethodInfo<>(method, Collections.singletonList(ValueUtils.ValueType.ref_serviceObjects));
+                    return new MethodInfo(method, Collections.singletonList(
+                        ValueUtils.ValueType.ref_serviceObjects));
                 }
             }
             catch ( SuitableMethodNotAccessibleException ex )
@@ -165,7 +187,7 @@ implements org.apache.felix.scr.impl.inject.ReferenceMethod
                     {
                         logger.log( LogService.LOG_DEBUG, "doFindMethod: Found Method " + method, null );
                     }
-                    return new MethodInfo<>(method,
+                    return new MethodInfo(method,
                         Collections.singletonList(ValueUtils.ValueType.ref_serviceType));
                 }
             }
@@ -184,7 +206,7 @@ implements org.apache.felix.scr.impl.inject.ReferenceMethod
                     {
                         logger.log( LogService.LOG_DEBUG, "doFindMethod: Found Method " + method, null );
                     }
-                    return new MethodInfo<>(method,
+                    return new MethodInfo(method,
                         Collections.singletonList(ValueUtils.ValueType.ref_serviceType));
                 }
             }
@@ -205,7 +227,7 @@ implements org.apache.felix.scr.impl.inject.ReferenceMethod
                         {
                             logger.log( LogService.LOG_DEBUG, "doFindMethod: Found Method " + method, null );
                         }
-                        return new MethodInfo<>(method,
+                        return new MethodInfo(method,
                             Collections.singletonList(ValueUtils.ValueType.ref_map));
                     }
                 }
@@ -232,7 +254,7 @@ implements org.apache.felix.scr.impl.inject.ReferenceMethod
                         List<ValueUtils.ValueType> paramTypes = new ArrayList<>(2);
                         paramTypes.add(ValueUtils.ValueType.ref_serviceType);
                         paramTypes.add(ValueUtils.ValueType.ref_map);
-                        return new MethodInfo<>(method, paramTypes);
+                        return new MethodInfo(method, paramTypes);
                     }
                 }
                 catch ( SuitableMethodNotAccessibleException ex )
@@ -254,7 +276,7 @@ implements org.apache.felix.scr.impl.inject.ReferenceMethod
                         List<ValueUtils.ValueType> paramTypes = new ArrayList<>(2);
                         paramTypes.add(ValueUtils.ValueType.ref_serviceType);
                         paramTypes.add(ValueUtils.ValueType.ref_map);
-                        return new MethodInfo<>(method,
+                        return new MethodInfo(method,
                             paramTypes);
                     }
                 }
@@ -346,7 +368,7 @@ implements org.apache.felix.scr.impl.inject.ReferenceMethod
                                 {
                                     logger.log( LogService.LOG_DEBUG, "doFindMethod: Found Method " + m, null );
                                 }
-                                return new MethodInfo<>(m, paramTypes);
+                                return new MethodInfo(m, paramTypes);
                             }
                             suitableMethodNotAccessible = true;
                         }
@@ -689,4 +711,18 @@ implements org.apache.felix.scr.impl.inject.ReferenceMethod
         return "bind";
     }
 
+    @Override
+    protected CachedMethodInfo getCachedMethodInfo()
+    {
+        // do nothing, if proven to help we could cache
+        // the info in the ReferenceMetadata
+        return null;
+    }
+
+    @Override
+    protected void setCachedMethodInfo(Class<?> componentClass, MethodInfo methodInfo)
+    {
+        // do nothing, if proven to help we could cache
+        // the info in the ReferenceMetadata
+    }
 }

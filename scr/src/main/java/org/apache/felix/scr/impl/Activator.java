@@ -213,8 +213,12 @@ public class Activator extends AbstractExtender
     public void bundleChanged(BundleEvent event)
     {
         super.bundleChanged(event);
-        if (event.getType() == BundleEvent.UPDATED
-            || event.getType() == BundleEvent.UNINSTALLED)
+        if ((event.getType() & //
+            ( //
+                BundleEvent.UPDATED | //
+                BundleEvent.UNINSTALLED | //
+                BundleEvent.UNRESOLVED)) != 0 //
+            )
         {
             m_componentMetadataStore.remove(event.getBundle().getBundleId());
         }

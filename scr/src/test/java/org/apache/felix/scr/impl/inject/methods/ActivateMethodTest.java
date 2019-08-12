@@ -25,7 +25,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.felix.scr.impl.inject.ActivatorParameter;
+import org.apache.felix.scr.impl.inject.BindParameters;
 import org.apache.felix.scr.impl.inject.ComponentMethodsImpl;
+import org.apache.felix.scr.impl.inject.methods.BaseMethod.CachedMethodInfo;
+import org.apache.felix.scr.impl.inject.methods.BaseMethod.MethodInfo;
 import org.apache.felix.scr.impl.logger.ComponentLogger;
 import org.apache.felix.scr.impl.logger.MockComponentLogger;
 import org.apache.felix.scr.impl.manager.ComponentActivator;
@@ -288,15 +291,57 @@ public class ActivateMethodTest extends TestCase
      */
     private void checkMethod( BaseObject obj, String methodName, String methodDesc, DSVersion version )
     {
+        ComponentMetadata metadata = new ComponentMetadata(version);
+        metadata.setActivate(methodName);
+
         ComponentContainer<?> container = newContainer();
         SingleComponentManager<?> icm = new SingleComponentManager( container, new ComponentMethodsImpl() );
-        ActivateMethod am = new ActivateMethod( methodName, methodName != null, obj.getClass(), version, false, false );
+        ActivateMethod am = new ActivateMethod(metadata, obj.getClass());
 
         am.invoke( obj, new ActivatorParameter( new ComponentContextImpl(icm, m_bundle, null), -1 ), null );
         Method m = am.getMethod();
         assertNotNull( m );
         assertEquals( methodName, m.getName() );
         assertEquals( methodDesc, obj.getCalledMethod() );
+
+        if (m != null)
+        {
+            CachedMethodInfo cmi = metadata.getActivateMethodInfo();
+            assertNotNull("Cached activate method info is null.", cmi);
+            am = new ActivateMethod(metadata, obj.getClass());
+            ComponentContextImpl cc = new ComponentContextImpl(icm, m_bundle, null);
+            am.invoke(obj,
+                new ActivatorParameter(new ComponentContextImpl(icm, m_bundle, null), -1),
+                null);
+            assertEquals("Different methods.", m, am.getMethod());
+
+            Class<?> theClass = obj.getClass();
+            try
+            {
+                MethodInfo found = cmi.getMethodInfo(am, theClass, true, true,
+                    cc.getLogger());
+                if (found == null && !cmi.isDeclaredInComponentClass())
+                {
+                    do
+                    {
+                        theClass = theClass.getSuperclass();
+                        found = cmi.getMethodInfo(am, theClass, true, true,
+                            cc.getLogger());
+                    }
+                    while (found == null && theClass != null);
+                }
+                assertNotNull("No MethodInfo found.", found);
+                assertEquals("Different methods.", m, found.getMethod());
+            }
+            catch (InvocationTargetException e)
+            {
+                fail(e.getMessage());
+            }
+            catch (SuitableMethodNotAccessibleException e)
+            {
+                fail(e.getMessage());
+            }
+        }
     }
 
 
@@ -374,13 +419,19 @@ public class ActivateMethodTest extends TestCase
      */
     private void ensureMethodNotFoundMethod( BaseObject obj, String methodName, DSVersion version )
     {
+        ComponentMetadata metadata = new ComponentMetadata(version);
+        metadata.setActivate(methodName);
+
         ComponentContainer container = newContainer();
         SingleComponentManager icm = new SingleComponentManager( container, new ComponentMethodsImpl() );
-        ActivateMethod am = new ActivateMethod( methodName, methodName != null, obj.getClass(), version, false, false );
+        ActivateMethod am = new ActivateMethod(metadata, obj.getClass());
+
         am.invoke( obj, new ActivatorParameter( new ComponentContextImpl(icm, m_bundle, null), -1 ), null );
         Method m = am.getMethod();
         assertNull( m );
         assertNull( obj.getCalledMethod() );
+        assertTrue(am.getCachedMethodInfo() == null
+            || am.getCachedMethodInfo() == CachedMethodInfo.NULL_METHOD_INFO);
     }
 
 
@@ -408,7 +459,9 @@ public class ActivateMethodTest extends TestCase
     }
     public void testMethodSorting() throws Exception
     {
-        ActivateMethod am = new ActivateMethod( "a", true, Sort.class, DSVersion.DS11, false, false );
+        ComponentMetadata metadata = new ComponentMetadata(DSVersion.DS11);
+        metadata.setActivate("a");
+        ActivateMethod am = new ActivateMethod(metadata, Sort.class);
         List<Method> ms = am.getSortedMethods(Sort.class);
         assertEquals(8, ms.size());
         assertEquals(1, ms.get(0).getParameterTypes().length);

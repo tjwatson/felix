@@ -18,16 +18,20 @@
  */
 package org.apache.felix.scr.impl.inject.methods;
 
-import org.apache.felix.scr.impl.metadata.DSVersion;
+import org.apache.felix.scr.impl.metadata.ComponentMetadata;
 
 
 public class ModifiedMethod extends ActivateMethod
 {
 
-    public ModifiedMethod( final String methodName,
-            final Class<?> componentClass, final DSVersion dsVersion, final boolean configurableServiceProperties, boolean supportsInterfaces )
+    public ModifiedMethod(final ComponentMetadata metadata, final Class<?> componentClass)
     {
-        super( methodName, methodName != null, componentClass, dsVersion, configurableServiceProperties, supportsInterfaces );
+        super( //
+            metadata.getModified(), //
+            metadata.getModified() != null, //
+            componentClass, //
+            metadata //
+        );
     }
 
 
@@ -40,5 +44,18 @@ public class ModifiedMethod extends ActivateMethod
     protected String getMethodNamePrefix()
     {
         return "modified";
+    }
+
+    @Override
+    protected CachedMethodInfo getCachedMethodInfo()
+    {
+        return m_componentMetadata.getModifiedMethodInfo();
+    }
+
+    @Override
+    protected void setCachedMethodInfo(Class<?> componentClass, MethodInfo methodInfo)
+    {
+        m_componentMetadata.setModifiedMethodInfo(
+            CachedMethodInfo.createdCacheMethodInfo(componentClass, methodInfo));
     }
 }

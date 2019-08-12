@@ -32,31 +32,48 @@ import org.apache.felix.scr.impl.inject.Annotations;
 import org.apache.felix.scr.impl.inject.ClassUtils;
 import org.apache.felix.scr.impl.inject.LifecycleMethod;
 import org.apache.felix.scr.impl.inject.MethodResult;
+import org.apache.felix.scr.impl.inject.ValueUtils.ValueType;
 import org.apache.felix.scr.impl.logger.ComponentLogger;
 import org.apache.felix.scr.impl.manager.ComponentContextImpl;
-import org.apache.felix.scr.impl.metadata.DSVersion;
+import org.apache.felix.scr.impl.metadata.ComponentMetadata;
 import org.osgi.service.log.LogService;
 
 
-public class ActivateMethod extends BaseMethod<ActivatorParameter, Object> implements LifecycleMethod
+public class ActivateMethod extends BaseMethod<ActivatorParameter> implements LifecycleMethod
 {
-
     protected final boolean m_supportsInterfaces;
+    protected final ComponentMetadata m_componentMetadata;
 
-    public ActivateMethod( final String methodName,
-            final boolean methodRequired,
-            final Class<?> componentClass,
-            final DSVersion dsVersion,
-            final boolean configurableServiceProperties,
-            final boolean supportsInterfaces)
+    public ActivateMethod(final ComponentMetadata metadata, final Class<?> componentClass)
     {
-        super( methodName, methodRequired, componentClass, dsVersion, configurableServiceProperties );
-        m_supportsInterfaces = supportsInterfaces;
+        super( //
+            metadata.getActivate(), //
+            metadata.isActivateDeclared(), //
+            componentClass, //
+            metadata //
+        );
+        m_componentMetadata = metadata;
+        m_supportsInterfaces = metadata.isConfigureWithInterfaces();
     }
 
+    protected ActivateMethod( //
+        final String methodName, //
+        final boolean methodRequired, //
+        final Class<?> componentClass, //
+        final ComponentMetadata metadata)
+    {
+        super( //
+            methodName, //
+            methodRequired, //
+            componentClass, //
+            metadata //
+        );
+        m_componentMetadata = metadata;
+        m_supportsInterfaces = metadata.isConfigureWithInterfaces();
+    }
 
     @Override
-    protected MethodInfo<Object> doFindMethod( final Class<?> targetClass,
+    protected MethodInfo doFindMethod(final Class<?> targetClass,
             final boolean acceptPrivate,
             final boolean acceptPackage,
             final ComponentLogger logger )
@@ -72,7 +89,7 @@ public class ActivateMethod extends BaseMethod<ActivatorParameter, Object> imple
                 { ClassUtils.COMPONENT_CONTEXT_CLASS }, acceptPrivate, acceptPackage, logger );
             if ( method != null )
             {
-                return new MethodInfo<>(method);
+                return new MethodInfo(method);
             }
         }
         catch ( SuitableMethodNotAccessibleException thrown )
@@ -94,7 +111,7 @@ public class ActivateMethod extends BaseMethod<ActivatorParameter, Object> imple
                     {
                         if ( accept( m, acceptPrivate, acceptPackage, returnValue() ) )
                         {
-                            return new MethodInfo<>(m);
+                            return new MethodInfo(m);
                         }
                         suitableMethodNotAccessible = true;
                     }
@@ -102,7 +119,7 @@ public class ActivateMethod extends BaseMethod<ActivatorParameter, Object> imple
                     {
                         if ( accept( m, acceptPrivate, acceptPackage, returnValue() ) )
                         {
-                            return new MethodInfo<>(m);
+                            return new MethodInfo(m);
                         }
                         suitableMethodNotAccessible = true;
                     }
@@ -110,7 +127,7 @@ public class ActivateMethod extends BaseMethod<ActivatorParameter, Object> imple
                     {
                         if ( accept( m, acceptPrivate, acceptPackage, returnValue() ) )
                         {
-                            return new MethodInfo<>(m);
+                            return new MethodInfo(m);
                         }
                         suitableMethodNotAccessible = true;
                     }
@@ -118,7 +135,7 @@ public class ActivateMethod extends BaseMethod<ActivatorParameter, Object> imple
                     {
                         if ( accept( m, acceptPrivate, acceptPackage, returnValue() ) )
                         {
-                            return new MethodInfo<>(m);
+                            return new MethodInfo(m);
                         }
                         suitableMethodNotAccessible = true;
                     }
@@ -126,7 +143,7 @@ public class ActivateMethod extends BaseMethod<ActivatorParameter, Object> imple
                     {
                         if ( accept( m, acceptPrivate, acceptPackage, returnValue() ) )
                         {
-                            return new MethodInfo<>(m);
+                            return new MethodInfo(m);
                         }
                         suitableMethodNotAccessible = true;
                     }
@@ -152,7 +169,7 @@ public class ActivateMethod extends BaseMethod<ActivatorParameter, Object> imple
                     {
                         if ( accept( m, acceptPrivate, acceptPackage, returnValue() ) )
                         {
-                            return new MethodInfo<>(m);
+                            return new MethodInfo(m);
                         }
                         suitableMethodNotAccessible = true;
                     }
@@ -162,7 +179,7 @@ public class ActivateMethod extends BaseMethod<ActivatorParameter, Object> imple
                 {
                     if ( accept( m, acceptPrivate, acceptPackage, returnValue() ) )
                     {
-                        return new MethodInfo<>(m);
+                        return new MethodInfo(m);
                     }
                     suitableMethodNotAccessible = true;
                 }
@@ -179,7 +196,7 @@ public class ActivateMethod extends BaseMethod<ActivatorParameter, Object> imple
     }
 
     @Override
-    protected void setTypes(Object types)
+    protected void setTypes(List<ValueType> types)
     {
         // Don't care about types
     }
@@ -280,8 +297,10 @@ public class ActivateMethod extends BaseMethod<ActivatorParameter, Object> imple
             }
             else
             {
+                @SuppressWarnings("unchecked")
+                Map<String, Object> properties = (Map<String, Object>) ap.getComponentContext().getProperties();
                 param[i] = Annotations.toObject(parameterTypes[i],
-                    (Map<String, Object>) ap.getComponentContext().getProperties(),
+                    properties,
                     ap.getComponentContext().getBundleContext().getBundle(), m_supportsInterfaces);
             }
         }
@@ -319,4 +338,16 @@ public class ActivateMethod extends BaseMethod<ActivatorParameter, Object> imple
         return null;
     }
 
+    @Override
+    protected CachedMethodInfo getCachedMethodInfo()
+    {
+        return m_componentMetadata.getActivateMethodInfo();
+    }
+
+    @Override
+    protected void setCachedMethodInfo(Class<?> componentClass, MethodInfo methodInfo)
+    {
+        m_componentMetadata.setActivateMethodInfo(
+            CachedMethodInfo.createdCacheMethodInfo(componentClass, methodInfo));
+    }
 }
